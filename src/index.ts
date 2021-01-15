@@ -2,8 +2,10 @@ import bindings from 'bindings';
 const native = bindings('interruptor');
 export type InterruptHandle = { __id: number };
 
-export function runInterruptible<Ret>(fn: (handle: InterruptHandle) => Ret): Ret {
-  return native.runInterruptible((index) => {
+export function runInterruptible<Ret>(
+  fn: (handle: InterruptHandle) => Ret
+): Ret | void {
+  return native.runInterruptible((index: number) => {
     return fn({ __id: index });
   });
 }
