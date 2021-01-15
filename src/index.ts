@@ -1,0 +1,15 @@
+import bindings from 'bindings';
+const native = bindings('interruptor');
+export type InterruptHandle = { __id: number };
+
+export function runInterruptible<Ret>(fn: (handle: InterruptHandle) => Ret): Ret {
+  return native.runInterruptible((index) => {
+    return fn({ __id: index });
+  });
+}
+
+export function interrupt(handle: InterruptHandle): void {
+  native.interrupt(handle.__id);
+  // Make a dummy call to make sure that the termination exception is propagated.
+  process.memoryUsage();
+}
