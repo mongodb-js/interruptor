@@ -1,6 +1,11 @@
 import assert from 'assert';
 import { Worker } from 'worker_threads';
-import { runInterruptible, interrupt, InterruptHandle } from '../';
+import {
+  runInterruptible,
+  interrupt,
+  InterruptHandle,
+  hasInterrupted
+} from '../';
 
 describe('runInterruptible', () => {
   it('can interrupt itself', () => {
@@ -32,5 +37,24 @@ describe('runInterruptible', () => {
       });
       while (true);
     });
+  });
+});
+
+describe('hasInterrupted', () => {
+  it('returns FALSE if interrupt was not called with the provided handle', () => {
+    let handle: InterruptHandle;
+    runInterruptible((h: InterruptHandle) => {
+      handle = h;
+    });
+    assert.strictEqual(hasInterrupted(handle), false);
+  });
+
+  it('returns TRUE if interrupt was called with the provided handle', () => {
+    let handle: InterruptHandle;
+    runInterruptible((h: InterruptHandle) => {
+      handle = h;
+      interrupt(handle);
+    });
+    assert.strictEqual(hasInterrupted(handle), true);
   });
 });

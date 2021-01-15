@@ -15,3 +15,7 @@ export function interrupt(handle: InterruptHandle): void {
   // Make a dummy call to make sure that the termination exception is propagated.
   process.memoryUsage();
 }
+
+export function hasInterrupted(handle: InterruptHandle): boolean {
+  return native.hasInterrupted(handle.__id);
+}
