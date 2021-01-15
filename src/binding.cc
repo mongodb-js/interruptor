@@ -1,7 +1,6 @@
 #include "node.h"
 #include <mutex>
 #include <unordered_map>
-#include <set>
 
 using namespace node;
 using namespace v8;
@@ -9,8 +8,6 @@ using namespace v8;
 namespace interruptor_bindings {
 
 template <typename T> inline void USE(T&&) {}
-
-std::set<uint64_t> interrupted;
 
 class Interruptor {
  public:
@@ -68,7 +65,6 @@ void Interruptor::Interrupt() {
   if (!has_interrupted_) {
     isolate_->TerminateExecution();
     has_interrupted_ = true;
-    interrupted.insert(index_);
   }
 }
 
@@ -80,12 +76,6 @@ void Interrupt(const FunctionCallbackInfo<Value>& args) {
   if (result.first != nullptr) {
     result.first->Interrupt();
   }
-}
-
-void HasInterrupted(const FunctionCallbackInfo<Value>& args) {
-  assert(args[0]->IsBigInt());
-  uint64_t index = args[0].As<BigInt>()->Uint64Value();
-  args.GetReturnValue().Set(interrupted.count(index) == 1);
 }
 
 void RunInterruptible(const FunctionCallbackInfo<Value>& args) {
@@ -117,12 +107,6 @@ NODE_MODULE_INIT() {
                   isolate, "interrupt", NewStringType::kInternalized)
                   .ToLocalChecked(),
                FunctionTemplate::New(isolate, Interrupt)
-                  ->GetFunction(context).ToLocalChecked()).Check();
-  exports->Set(context,
-               String::NewFromUtf8(
-                  isolate, "hasInterrupted", NewStringType::kInternalized)
-                  .ToLocalChecked(),
-               FunctionTemplate::New(isolate, HasInterrupted)
                   ->GetFunction(context).ToLocalChecked()).Check();
 }
 
