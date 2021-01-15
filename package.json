@@ -1,6 +1,6 @@
 {
   "name": "interruptor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Run a function with the possibility to interrupt it from another thread",
   "main": "lib/index.js",
   "exports": {
