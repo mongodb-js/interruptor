@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node-version: [12.4.0, 12.x, 14.x, 15.x]
+        node-version: [12.4.0, 12.x, 14.x, 16.x, 18.x, 20.x, 22.x, 24.x]
         exclude:
           - os: windows-latest
             node-version: 12.4.0 # The node-gyp shipped with this is too old
