@@ -3,25 +3,42 @@ on: [push, pull_request]
 name: CI
 
 jobs:
-  test-posix:
-    name: Tests
+  test-node:
+    name: Node.js ${{ matrix.node-version }} / ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         node-version: [18.x, 20.x, 22.x, 24.x]
-        exclude:
-          - os: windows-latest
-            node-version: 12.4.0 # The node-gyp shipped with this is too old
     runs-on: ${{matrix.os}}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v6
         with:
-          check-latest: true
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm install
       - name: Test
         run: npm test
+
+  test-electron:
+    name: Electron ${{ matrix.electron-version }} / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        electron-version: ['37.10.3', '41.1.1']
+    runs-on: ${{matrix.os}}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+      - name: Install Dependencies
+        run: npm install
+      - name: Install Electron and @electron/rebuild
+        run: npm install --no-save electron@${{ matrix.electron-version }} @electron/rebuild
+      - name: Rebuild against Electron headers
+        run: npx electron-rebuild
