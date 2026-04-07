@@ -95,7 +95,7 @@ void RunInterruptible(const FunctionCallbackInfo<Value>& args) {
 }
 
 NODE_MODULE_INIT() {
-  Isolate* isolate = context->GetIsolate();
+  Isolate* isolate = Isolate::GetCurrent();
   exports->Set(context,
                String::NewFromUtf8(
                   isolate, "runInterruptible", NewStringType::kInternalized)
