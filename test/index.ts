@@ -1,6 +1,9 @@
 import assert from 'assert';
 import { Worker } from 'worker_threads';
-import { runInterruptible, interrupt, InterruptHandle } from '../';
+import { createRequire } from 'module';
+import { runInterruptible, interrupt, type InterruptHandle } from '../lib/index.js';
+
+const require = createRequire(import.meta.url);
 
 describe('runInterruptible', () => {
   it('can interrupt itself', () => {
