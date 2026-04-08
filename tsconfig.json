@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "downlevelIteration": true,
     "sourceMap": true,
     "strictNullChecks": false,
     "declaration": true,
     "removeComments": true,
-    "target": "es2019",
-    "lib": ["es2019"],
+    "target": "es2025",
+    "erasableSyntaxOnly": true,
+    "types": ["node"],
+    "rootDir": "./src",
     "outDir": "./lib",
-    "moduleResolution": "node",
     "module": "commonjs"
   },
   "include": [

@@ -1,5 +1,19 @@
-import bindings from 'bindings';
-const native = bindings('interruptor');
+function load() {
+  try {
+    return require('../build/Release/interruptor.node');
+  } catch {
+    // Webpack will fail when just returning the require, so we need to wrap in a try/catch and rethrow.
+    /* eslint no-useless-catch: 0 */
+    try {
+      return require('../build/Debug/interruptor.node');
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+
+const native = load();
+
 export type InterruptHandle = { __id: number };
 
 export function runInterruptible<Ret>(
