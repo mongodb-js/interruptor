@@ -15,6 +15,7 @@
     "test": "npm run lint && npm run build && nyc npm run test-only",
     "test-nolint": "npm run build && npm run test-only",
     "test-only": "mocha --colors test/*.ts",
+    "test-electron": "electron-mocha --colors test/*.ts",
     "build": "node-gyp rebuild && npm run compile-ts && gen-esm-wrapper . ./.esm-wrapper.mjs",
     "prepack": "npm run build",
     "compile-ts": "tsc -p tsconfig.json"
@@ -46,6 +47,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "electron-mocha": "^13.1.0",
     "gen-esm-wrapper": "^1.1.0",
     "mocha": "^11.7.5",
     "nyc": "^15.1.0",

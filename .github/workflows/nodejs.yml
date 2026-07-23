@@ -42,3 +42,11 @@ jobs:
         run: npm install --no-save electron@${{ matrix.electron-version }} @electron/rebuild
       - name: Rebuild against Electron headers
         run: npx electron-rebuild
+      - name: Compile TypeScript
+        run: npm run compile-ts
+      - name: Run tests under Electron (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run --auto-servernum npm run test-electron
+      - name: Run tests under Electron (macOS/Windows)
+        if: runner.os != 'Linux'
+        run: npm run test-electron
