@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        electron-version: ['37.10.3', '41.1.1', latest]
+        electron-version: ['37.10.3', '41.1.1', '43.2.0', latest]
     runs-on: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v6
